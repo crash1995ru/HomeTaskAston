@@ -2,6 +2,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public class Student {
     @JsonCreator
     public Student(@JsonProperty("lastName") String lastName,
                    @JsonProperty("firstName") String firstName,
-                   @JsonProperty("patronomic") String patronymic,
+                   @JsonProperty("patronymic") String patronymic,
                    @JsonProperty("bookList") List<Book> bookList) {
 
         validateLastName(lastName);
@@ -118,7 +119,7 @@ public class Student {
     }
 
     public List<Book> getBookList() {
-        return new ArrayList<>(bookList);
+        return Collections.unmodifiableList(bookList);
     }
 
     public void setBookList(List<Book> bookList) {
