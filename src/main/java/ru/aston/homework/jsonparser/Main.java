@@ -1,4 +1,4 @@
-package ru.jsonparser;
+package ru.aston.homework.jsonparser;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,23 +20,24 @@ public class Main {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         List<Student> students = new ArrayList<>();
-        try {
-            students = mapper.readValue(
-                    new File("src/main/resources/students.json"),
-                    new TypeReference<List<Student>>(){}
-            );
+        try (InputStream is = Main.class.getResourceAsStream("/students.json")) {
+            if (is == null) {
+                throw new IllegalStateException("students.json not found on classpath");
+            }
+            students = mapper.readValue(is, new TypeReference<List<Student>>() {});
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error reading students.json");
+           e.getMessage();
         }
 
         students.stream()
                 .peek(System.out::println)
                 .map(Student::getBookList)
                 .flatMap(List::stream)
-                .sorted(Comparator.comparingInt(Book::getPages))
+                .sorted(Comparator.comparingInt(Book::getPages)
+                        .thenComparing(Book::getTitle)
+                        .thenComparing(Book::getAuthor))
                 .distinct()
-                .filter(book -> book.getYear().getYear() > 2000)
+                .filter(book -> book.getYear() > 2000)
                 .limit(3)
                 .map(Book::getYear)
                 .findFirst()

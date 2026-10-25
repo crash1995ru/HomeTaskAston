@@ -1,4 +1,4 @@
-package ru.jsonparser;
+package ru.aston.homework.jsonparser;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -147,7 +147,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "ru.jsonparser.Student{" +
+        return "Student{" +
                 "lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", patronymic='" + patronymic + '\'' +

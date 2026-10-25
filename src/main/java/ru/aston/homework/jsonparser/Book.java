@@ -1,4 +1,4 @@
-package ru.jsonparser;
+package ru.aston.homework.jsonparser;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -81,8 +81,8 @@ public class Book {
         this.author = author;
     }
 
-    public LocalDate getYear() {
-        return year;
+    public int getYear() {
+        return year.getYear();
     }
 
     public void setYear(LocalDate year) {
@@ -113,7 +113,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "ru.jsonparser.Book{" +
+        return "Book{" +
                 "title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", year=" + year +
