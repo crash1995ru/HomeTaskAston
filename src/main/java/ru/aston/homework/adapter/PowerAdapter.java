@@ -1,6 +1,6 @@
 package ru.aston.homework.adapter;
 
-class PowerAdapter implements UsbC {
+public class PowerAdapter implements UsbC {
     private final EuSocket socket;
 
     public PowerAdapter(EuSocket socket) {
@@ -8,9 +8,9 @@ class PowerAdapter implements UsbC {
     }
 
     @Override
-    public void chargeWithUsbC() {
-        System.out.print("Адаптер преобразует 220V -> 5V. ");
-        socket.provide220V();
-        System.out.println("Телефон заряжается.");
+    public int getVoltage() {
+        int inputVoltage = socket.provideVoltage();
+        // Реальное преобразование: 220V -> 5V
+        return inputVoltage == 220 ? 5 : 0;
     }
 }

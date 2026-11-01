@@ -4,6 +4,8 @@ public class Main {
     public static void main(String[] args) {
         EuSocket socket = new WallSocket();
         UsbC adapter = new PowerAdapter(socket);
-        adapter.chargeWithUsbC();
+        Phone phone = new Phone();
+
+        phone.charge(adapter);
     }
 }
