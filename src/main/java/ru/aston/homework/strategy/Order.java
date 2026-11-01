@@ -1,11 +1,13 @@
 package ru.aston.homework.strategy;
 
+import java.math.BigDecimal;
+
 public class Order {
     private final String orderId;
-    private final double originalAmount;
+    private final BigDecimal originalAmount;
     private DiscountStrategy discountStrategy;
 
-    public Order(String orderId, double originalAmount) {
+    public Order(String orderId, BigDecimal originalAmount) {
         this.orderId = orderId;
         this.originalAmount = originalAmount;
         this.discountStrategy = new NoDiscount();
@@ -15,13 +17,11 @@ public class Order {
         this.discountStrategy = discountStrategy;
     }
 
-    public void printReceipt() {
-        double finalAmount = discountStrategy.apply(originalAmount);
-
-        System.out.printf("=== Заказ %s ===%n", orderId);
-        System.out.printf("Исходная сумма: %.2f руб.%n", originalAmount);
-        System.out.printf("Применена:      %s%n", discountStrategy.getName());
-        System.out.printf("Итого к оплате: %.2f руб.%n", finalAmount);
-        System.out.println("-------------------------");
+    public BigDecimal getFinalAmount() {
+        return discountStrategy.apply(originalAmount);
     }
+
+    public String getOrderId() { return orderId; }
+    public BigDecimal getOriginalAmount() { return originalAmount; }
+    public DiscountStrategy getDiscountStrategy() { return discountStrategy; }
 }

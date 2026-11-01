@@ -3,9 +3,8 @@ package ru.aston.homework.proxy;
 import java.util.Map;
 
 public class RealUserService implements UserService {
-
-    // Имитация базы данных
-    private final Map<Integer, String> database = Map.of(
+    private static final long NETWORK_DELAY_MS = 500; // Вынесли в константу
+    private static final Map<Integer, String> DATABASE = Map.of(
             1, "Иван Иванов",
             2, "Мария Петрова",
             3, "Алексей Смирнов"
@@ -13,21 +12,17 @@ public class RealUserService implements UserService {
 
     @Override
     public String getUserName(int id) {
-        System.out.println(" [DB] Идет запрос к базе данных для ID: " + id + "...");
-        simulateNetworkDelay();
+        System.out.println("[DB] Запрос к базе данных для ID: " + id);
+        try {
+            Thread.sleep(NETWORK_DELAY_MS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
 
-        String name = database.get(id);
+        String name = DATABASE.get(id);
         if (name == null) {
             throw new IllegalArgumentException("Пользователь с ID " + id + " не найден");
         }
         return name;
-    }
-
-    private void simulateNetworkDelay() {
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 }

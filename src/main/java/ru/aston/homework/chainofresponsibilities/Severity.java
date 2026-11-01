@@ -1,4 +1,7 @@
 package ru.aston.homework.chainofresponsibilities;
 
-public class Severity {
+public enum Severity {
+    LOW,
+    MEDIUM,
+    HIGH
 }

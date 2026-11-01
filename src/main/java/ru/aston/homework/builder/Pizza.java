@@ -1,8 +1,10 @@
-package ru.aston.homework.bilder;
+package ru.aston.homework.builder;
+
+import java.util.Objects;
 
 public class Pizza {
-    private final String size;
-    private final String dough;
+    private final Size size;
+    private final Dough dough;
     private final boolean cheese;
     private final boolean bacon;
     private final boolean mushrooms;
@@ -17,21 +19,33 @@ public class Pizza {
         this.sauce = builder.sauce;
     }
 
+    public static Builder builder(Size size, Dough dough) {
+        return new Builder(size, dough);
+    }
+
     @Override
     public String toString() {
-        return String.format("Пицца [%s, %s, соус: %s, сыр: %s, бекон: %s, грибы: %s]", size, dough, sauce, cheese ? "да" : "нет", bacon ? "да" : "нет", mushrooms ? "да" : "нет");
+        return String.format(
+                "Пицца [%s, %s, соус: %s, сыр: %s, бекон: %s, грибы: %s]",
+                size.getDisplayName(),
+                dough.getDisplayName(),
+                sauce,
+                cheese ? "да" : "нет",
+                bacon ? "да" : "нет",
+                mushrooms ? "да" : "нет"
+        );
     }
 
     public static class Builder {
-        private final String size;
-        private final String dough;
+        private final Size size;
+        private final Dough dough;
 
-        private boolean cheese = false;
-        private boolean bacon = false;
-        private boolean mushrooms = false;
+        private boolean cheese;
+        private boolean bacon;
+        private boolean mushrooms;
         private String sauce = "томатный";
 
-        public Builder(String size, String dough) {
+        private Builder(Size size, Dough dough) {
             this.size = size;
             this.dough = dough;
         }
@@ -57,6 +71,17 @@ public class Pizza {
         }
 
         public Pizza build() {
+            // Валидация перед созданием объекта
+            if (size == null) {
+                throw new IllegalStateException("Размер пиццы не может быть null");
+            }
+            if (dough == null) {
+                throw new IllegalStateException("Тесто не может быть null");
+            }
+            if (sauce == null || sauce.isBlank()) {
+                throw new IllegalStateException("Соус не может быть пустым или null");
+            }
+
             return new Pizza(this);
         }
     }
